@@ -1,6 +1,7 @@
 package gohtml
 
 import (
+	"io"
 	"net/url"
 	"strings"
 )
@@ -10,7 +11,7 @@ type NodeModifier interface {
 }
 
 type NodeRenderer interface {
-	Render(*strings.Builder)
+	Render(io.Writer)
 }
 
 type BodyFunc = func(...NodeRenderer) NodeRenderer
@@ -29,12 +30,6 @@ func create(tag string, modifiers ...NodeModifier) BodyFunc {
 	}
 }
 
-type NodeRendererFunc func(*strings.Builder)
-
-func (nrf NodeRendererFunc) Render(builder *strings.Builder) {
-	nrf(builder)
-}
-
 func Attribute(name, value string) NodeModifierFunc {
 	return func(other *TagNode) {
 		other.attributes[name] = value
@@ -42,7 +37,7 @@ func Attribute(name, value string) NodeModifierFunc {
 }
 
 func For[T any](ts []T, transform func(T) NodeRenderer) NodeRendererFunc {
-	return func(builder *strings.Builder) {
+	return func(builder io.Writer) {
 		for _, t := range ts {
 			transform(t).Render(builder)
 		}
@@ -50,7 +45,7 @@ func For[T any](ts []T, transform func(T) NodeRenderer) NodeRendererFunc {
 }
 
 func If(condition bool, node NodeRenderer) NodeRendererFunc {
-	return func(builder *strings.Builder) {
+	return func(builder io.Writer) {
 		if condition {
 			node.Render(builder)
 		}
