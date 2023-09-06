@@ -7,27 +7,27 @@ import (
 
 type TagNode struct {
 	tag        string
-	attributes map[string]string
-	children   []NodeRenderer
+	Attributes map[string]string
+	Children   []NodeRenderer
 }
 
 func (tn TagNode) Modify(other *TagNode) {
-	other.children = append(other.children, tn)
+	other.Children = append(other.Children, tn)
 }
 
-func (tn TagNode) Render(builder io.Writer) {
-	builder.Write([]byte("<" + tn.tag))
+func (tn TagNode) Render(w io.Writer) {
+	w.Write([]byte("<" + tn.tag))
 
-	for k, v := range tn.attributes {
-		builder.Write([]byte(" " + k + "="))
-		builder.Write([]byte("\"" + html.EscapeString(v) + "\""))
+	for k, v := range tn.Attributes {
+		w.Write([]byte(" " + k + "="))
+		w.Write([]byte("'" + html.EscapeString(v) + "'"))
 	}
 
-	builder.Write([]byte{'>'})
+	w.Write([]byte{'>'})
 
-	for _, c := range tn.children {
-		c.Render(builder)
+	for _, c := range tn.Children {
+		c.Render(w)
 	}
 
-	builder.Write([]byte("</" + tn.tag + ">"))
+	w.Write([]byte("</" + tn.tag + ">"))
 }

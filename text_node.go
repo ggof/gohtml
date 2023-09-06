@@ -8,7 +8,7 @@ import (
 type TextNode string
 
 func (tn TextNode) Modify(other *TagNode) {
-	other.children = append(other.children, tn)
+	other.Children = append(other.Children, tn)
 }
 
 func (tn TextNode) Render(w io.Writer) {

@@ -2,4 +2,4 @@ package gohtml
 
 type NodeModifierFunc func(*TagNode)
 
-func (nmf NodeModifierFunc) Modify(other *TagNode) { nmf(other) }
+func (nmf NodeModifierFunc) Modify(node *TagNode) { nmf(node) }
