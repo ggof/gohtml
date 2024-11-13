@@ -13,6 +13,7 @@ func Home() NodeRenderer {
 		Div(ID("hello"), Class("some", "class"),
 			C("Hello world!"),
 			Ul(
+        If(false, C("Hello world")),
 				For([]string{"some", "name"}, func(s string) NodeRenderer { return Li(C(s)) }),
 			),
 		),

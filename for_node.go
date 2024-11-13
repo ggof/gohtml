@@ -13,12 +13,12 @@ func (fn ForNode[T]) Render(w io.Writer) {
 	}
 }
 
-func For[T any](ts []T, transform func(T) NodeRenderer) ForNode[T] {
-	return ForNode[T]{ts, transform}
-}
-
 func (fn ForNode[T]) Modify(node *TagNode) {
 	for _, e := range fn.elements {
 		node.Children = append(node.Children, fn.mapper(e))
 	}
+}
+
+func For[T any](ts []T, transform func(T) NodeRenderer) ForNode[T] {
+	return ForNode[T]{ts, transform}
 }

@@ -13,6 +13,11 @@ func (cn ConditionNode) Render(w io.Writer) {
 	}
 }
 
+func (cn ConditionNode) Modify(t *TagNode) {
+  t.Children = append(t.Children, cn)
+}
+
 func If(condition bool, node NodeRenderer) ConditionNode {
 	return ConditionNode{condition, node}
 }
+
